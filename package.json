@@ -1,0 +1,50 @@
+{
+  "name": "qwreey-tsutil",
+  "version": "1.0.0",
+  "description": "Typescript utilities",
+  "keywords": [
+    "typescript"
+  ],
+  "homepage": "https://github.com/qwreey/qwreey-tsutil#readme",
+  "bugs": {
+    "url": "https://github.com/qwreey/qwreey-tsutil/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qwreey/qwreey-tsutil.git"
+  },
+  "license": "MIT",
+  "author": "me@qwreey.moe",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "prepack": "npm ci --include=dev && npm run check && npm run build",
+    "build": "node_modules/typescript/bin/tsc",
+    "check": "npm run check:tsc && npm run check:eslint && npm run check:format",
+    "check:eslint": "eslint",
+    "check:tsc": "node_modules/typescript/bin/tsc --noemit",
+    "check:format": "prettier --check .",
+    "fix:format": "prettier --write .",
+    "test": "tsx src/test/index.ts"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.2.1",
+    "prettier": "^3.8.3",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.59.3"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist", "!dist/test"
+  ]
+}
