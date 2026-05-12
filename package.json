@@ -1,6 +1,6 @@
 {
-  "name": "qwreey-tsutil",
-  "version": "1.0.0",
+  "name": "@qwreey-js/tsutil",
+  "version": "1.0.1",
   "description": "Typescript utilities",
   "keywords": [
     "typescript"
