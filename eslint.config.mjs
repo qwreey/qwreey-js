@@ -7,7 +7,7 @@ import tseslint from "typescript-eslint";
 export default defineConfig(
   {
     extends: [js.configs.recommended, tseslint.configs.recommended],
-    basePath: "packages/orm/src",
+    basePath: "packages/react-util/src",
     rules: {
       "@typescript-eslint/no-namespace": "off",
       "@typescript-eslint/no-explicit-any": "off",
@@ -15,7 +15,7 @@ export default defineConfig(
   },
   {
     extends: [js.configs.recommended, tseslint.configs.recommended],
-    basePath: "packages/fastify-typebaox-gen/src",
+    basePath: "packages/ts-util/src",
     rules: {
       "@typescript-eslint/no-namespace": "off",
       "@typescript-eslint/no-explicit-any": "off",

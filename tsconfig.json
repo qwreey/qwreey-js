@@ -20,14 +20,8 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
-
-    // Project structure
-    "outDir": "./dist",
-    "rootDir": "./src",
   },
   "buildOptions": {
     "incremental": true,
   },
-  "include": ["src/**/*"],
-  "references": [],
 }

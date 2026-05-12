@@ -1,0 +1,51 @@
+{
+  "name": "@qwreey-js/react-util",
+  "version": "1.0.0",
+  "description": "Qwreey's react utilities",
+  "keywords": [
+    "react",
+    "typescript"
+  ],
+  "homepage": "https://github.com/qwreey/qwreey-js#readme",
+  "bugs": {
+    "url": "https://github.com/qwreey/qwreey-js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qwreey/qwreey-js.git"
+  },
+  "license": "MIT",
+  "author": "me@qwreey.moe",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "../../node_modules/typescript/bin/tsc",
+    "check": "npm run check:tsc && npm run check:eslint && npm run check:format",
+    "check:tsc": "../../node_modules/typescript/bin/tsc --noemit",
+    "check:eslint": "npm run --prefix ../../ check:eslint -- packages/react-util/src",
+    "check:format": "npm run --prefix ../../ prettier -- --check packages/react-util/src",
+    "fix:format": "npm run --prefix ../../ prettier -- --write packages/react-util/src",
+    "init": "npm ci --include-workspace-root --include=dev",
+    "prepack": "npm run init && npm run check && npm run build"
+  },
+  "dependencies": {
+    "react": "^19.2.6",
+    "@qwreey-js/ts-util": "^1.0.3"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@types/react": "^19.2.14"
+  }
+}
