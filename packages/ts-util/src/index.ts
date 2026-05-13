@@ -1,9 +1,9 @@
 export * from "./cached-getter.js";
+export * from "./color.js";
 export * from "./date.js";
 export * from "./interval.js";
-export * from "./json.js";
 export * from "./mixin.js";
-export * from "./promise.js";
+export * from "./params-builder.js";
 export * from "./result.js";
 export * from "./utils.js";
 
