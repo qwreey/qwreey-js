@@ -1,21 +1,24 @@
+"use client";
+
 import { Result } from "@qwreey-js/ts-util";
 import React from "react";
 
-// Async 한 함수의 작업을 처리하는 훅입니다.
-// 디펜던시가 업데이트 될 때 마다 func 를 수행하며,
-// 함수가 수행중일 때 running 이 true, 함수에 오류가 발생했을 때 errored 가 true, 결과엔 오류 메시지가
-// 함수가 정상 수행되었을 땐 result 에 결과가 부여됩니다.
-// 즉
-// const runState = useAsync(async ()=>{}, [ dep ]); 인 경우 dep 의 변경 마다 함수가 수행되며
-// runState 는 result, running, errored 필드를 가지게 됩니다.
-
+/**
+ * A React hook that handles the execution and state management of an asynchronous function.
+ * It re-executes the function (`func`) whenever the dependencies update.
+ * @template T The tuple type of arguments to be passed to the async function.
+ * @template U The type of the result value returned when the async function completes.
+ * @param {(...args: T) => Promise<U>} func The asynchronous function to execute.
+ * @param {T} [args] An array of arguments to pass to the async function `func`.
+ * @param {Array<unknown>} dependencies The dependency array that triggers a re-execution (same as `useEffect`'s dependency array).
+ * @returns {Result<U, Error> | null} Returns `null` if the task is in progress or not yet completed.
+ * Once completed, it returns a `Result` object containing either a success (`Result.ok`) or an error (`Result.err`) state.
+ */
 export function useAsync<T extends Array<unknown>, U>(
   func: (...args: T) => Promise<U>,
   args: T = [] as unknown as T,
   dependencies: Array<unknown>,
 ): Result<U, Error> | null {
-  "use client";
-
   const [result, setResult] = React.useState<Result<U, Error> | null>(null);
 
   React.useEffect(() => {
