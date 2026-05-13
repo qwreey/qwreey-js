@@ -61,6 +61,6 @@ export type MixinInstance<Apply extends MixinApplyList> = UnionToIntersection<
   {
     [K in keyof Apply]: Apply[K][0] extends true
       ? InstanceType<Apply[K][1]>
-      : {};
+      : object;
   }[number]
 >;

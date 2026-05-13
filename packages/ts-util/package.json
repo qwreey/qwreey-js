@@ -1,7 +1,7 @@
 {
   "name": "@qwreey-js/ts-util",
-  "version": "1.0.2",
-  "description": "Typescript utilities",
+  "version": "1.0.3",
+  "description": "Qwreey's typescript utilities",
   "keywords": [
     "typescript"
   ],
@@ -22,9 +22,9 @@
     "build": "../../node_modules/typescript/bin/tsc",
     "check": "npm run check:tsc && npm run check:eslint && npm run check:format",
     "check:tsc": "../../node_modules/typescript/bin/tsc --noemit",
-    "check:eslint": "npm run --prefix ../../ check:eslint -- packages/orm/src",
-    "check:format": "npm run --prefix ../../ prettier -- --check packages/orm/src",
-    "fix:format": "npm run --prefix ../../ prettier -- --write packages/orm/src",
+    "check:eslint": "npm run --prefix ../../ check:eslint -- packages/ts-util/src",
+    "check:format": "npm run --prefix ../../ prettier -- --check packages/ts-util/src",
+    "fix:format": "npm run --prefix ../../ prettier -- --write packages/ts-util/src",
     "init": "npm ci --include-workspace-root --include=dev",
     "prepack": "npm run init && npm run check && npm run build"
   },

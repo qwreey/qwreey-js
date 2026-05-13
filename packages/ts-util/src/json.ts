@@ -4,7 +4,7 @@ export function parseJsonSafe<T = any>(
   if (!content) return null;
   try {
     return JSON.parse(content);
-  } catch (e) {
+  } catch {
     return null;
   }
 }

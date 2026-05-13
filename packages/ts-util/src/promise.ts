@@ -2,7 +2,7 @@ import { logErr } from "./libLog.js";
 
 export function AsOk(promise: Promise<any>): Promise<boolean> {
   return promise
-    .then((_) => true)
+    .then(() => true)
     .catch((i) => {
       logErr("Promise throw(catch in AsOk): " + i);
       return false;
