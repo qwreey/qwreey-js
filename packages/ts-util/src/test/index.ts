@@ -8,7 +8,7 @@ abstract class Base1 {
   }
 }
 
-abstract class Base2 {
+abstract class Base2 extends Base1 {
   abstract mustImpl(): boolean;
   implByBase2(): boolean {
     console.log("implByBase2");
@@ -16,7 +16,7 @@ abstract class Base2 {
   }
 }
 
-class Impl extends mixin(Base1, Base2) {
+class Impl extends mixin(Base2) {
   mustImpl(): boolean {
     return true;
   }

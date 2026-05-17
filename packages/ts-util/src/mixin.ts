@@ -35,26 +35,40 @@ export type Mixin<T extends AbstractConstructor[]> = T extends [
  */
 export function applyRuntimeMixins(targetClass: any, baseClassList: any[]) {
   for (const baseClass of baseClassList) {
-    Object.getOwnPropertyNames(baseClass.prototype).forEach((name) => {
-      if (name !== "constructor") {
-        const descriptor = Object.getOwnPropertyDescriptor(
-          baseClass.prototype,
-          name,
-        );
-        if (descriptor) {
-          Object.defineProperty(targetClass.prototype, name, descriptor);
+    let currentProto = baseClass.prototype;
+    while (currentProto && currentProto !== Object.prototype) {
+      Object.getOwnPropertyNames(currentProto).forEach((name) => {
+        if (name !== "constructor") {
+          const descriptor = Object.getOwnPropertyDescriptor(
+            currentProto,
+            name,
+          );
+          if (descriptor) {
+            Object.defineProperty(targetClass.prototype, name, descriptor);
+          }
+        }
+      });
+      currentProto = Object.getPrototypeOf(currentProto);
+    }
+
+    let currentClass = baseClass;
+    while (
+      currentClass &&
+      currentClass !== Function.prototype &&
+      currentClass !== Object
+    ) {
+      for (const name of Object.getOwnPropertyNames(currentClass)) {
+        if (!["length", "prototype", "name"].includes(name)) {
+          const descriptor = Object.getOwnPropertyDescriptor(
+            currentClass,
+            name,
+          );
+          if (descriptor) {
+            Object.defineProperty(targetClass, name, descriptor);
+          }
         }
       }
-    });
-
-    for (const name of Object.getOwnPropertyNames(baseClass)) {
-      if (!["length", "prototype", "name"].includes(name)) {
-        const descriptor = Object.getOwnPropertyDescriptor(baseClass, name);
-
-        if (descriptor) {
-          Object.defineProperty(targetClass, name, descriptor);
-        }
-      }
+      currentClass = Object.getPrototypeOf(currentClass);
     }
   }
 }

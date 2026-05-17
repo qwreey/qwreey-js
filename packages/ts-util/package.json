@@ -1,6 +1,6 @@
 {
   "name": "@qwreey-js/ts-util",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Qwreey's typescript utilities",
   "keywords": [
     "typescript"
@@ -26,7 +26,8 @@
     "check:format": "npm run --prefix ../../ prettier -- --check packages/ts-util/src",
     "fix:format": "npm run --prefix ../../ prettier -- --write packages/ts-util/src",
     "init": "npm ci --include-workspace-root --include=dev",
-    "prepack": "npm run init && npm run check && npm run build"
+    "prepack": "npm run init && npm run check && npm run build",
+    "test": "../../node_modules/.bin/tsx src/test/index.ts"
   },
   "exports": {
     ".": {
