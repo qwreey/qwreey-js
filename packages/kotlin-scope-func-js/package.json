@@ -1,0 +1,24 @@
+{
+  "name": "@qwreey-js/kotlin-scope-func",
+  "version": "1.0.0",
+  "description": "kotlin's scope func in javascript. side effect only.",
+  "keywords": [
+    "typescript"
+  ],
+  "homepage": "https://github.com/qwreey/qwreey-js#readme",
+  "bugs": {
+    "url": "https://github.com/qwreey/qwreey-js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qwreey/qwreey-js.git"
+  },
+  "license": "MIT",
+  "author": "me@qwreey.moe",
+  "types": "types.d.ts",
+  "type": "module",
+  "main": "index.js",
+  "publishConfig": {
+    "access": "public"
+  }
+}
