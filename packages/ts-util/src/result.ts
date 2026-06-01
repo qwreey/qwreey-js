@@ -28,3 +28,6 @@ export namespace Result {
     return { error, result: undefined };
   }
 }
+
+export const Ok = Result.ok;
+export const Err = Result.err;

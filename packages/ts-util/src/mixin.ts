@@ -73,6 +73,52 @@ export function applyRuntimeMixins(targetClass: any, baseClassList: any[]) {
   }
 }
 
+export function isNonNullObject(instance: any): instance is object {
+  if (typeof instance !== "object") return false;
+  if (instance === null) return false;
+  return true;
+}
+
+/**
+ * Checks whether the given instance incorporates a specific mixin or base class.
+ * This utility serves as an alternative to the native `instanceof` operator for custom
+ * mixin implementations where the prototype chain does not inherently preserve the relationship.
+ *
+ * @template T - The constructor type of the target mixin or base class.
+ * @param {T} baseClass - The mixin or base class constructor to verify against.
+ * @param {*} instance - The object instance to inspect.
+ * @returns {instance is T} `true` if the instance incorporates the specified mixin; otherwise, `false`.
+ */
+export function hasMixin<T extends AbstractConstructor>(
+  baseClass: T,
+  instance: any,
+): instance is T {
+  const mixins = getMixins(instance);
+  if (!mixins) return false;
+  return mixins.includes(baseClass);
+}
+
+/**
+ * Retrieves the sequence of mixins associated with the specified instance.
+ *
+ * @param {*} instance - The object instance to inspect.
+ * @returns {ReadonlyArray<AbstractConstructor> | undefined} A read-only array of mixin constructors applied to the instance, or `undefined` if no mixins are registered.
+ */
+export function getMixins(
+  instance: any,
+): ReadonlyArray<AbstractConstructor> | undefined {
+  if (!isNonNullObject(instance)) return;
+  if (!("constructor" in instance)) return;
+
+  const instConstructor = instance.constructor;
+  if (typeof instConstructor !== "function") return;
+  if (!("$baseClassList" in instConstructor)) return;
+  const baseClassList = instConstructor["$baseClassList"] as any;
+  if (!Array.isArray(baseClassList)) return;
+
+  return baseClassList;
+}
+
 /**
  * Creates an anonymous target class, applies the `baseClassList` to it, and returns the constructed mixin class.
  * @param baseClassList A list of base classes you want to compose.
@@ -81,7 +127,9 @@ export function applyRuntimeMixins(targetClass: any, baseClassList: any[]) {
 export function mixin<T extends AbstractConstructor[]>(
   ...baseClassList: T
 ): Mixin<T> {
-  const targetClass = class {};
+  const targetClass = class {
+    static $baseClassList = baseClassList;
+  };
   applyRuntimeMixins(targetClass, baseClassList);
   return targetClass as any;
 }

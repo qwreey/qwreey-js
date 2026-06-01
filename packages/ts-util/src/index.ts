@@ -6,6 +6,8 @@ export * from "./mixin.js";
 export * from "./params-builder.js";
 export * from "./result.js";
 export * from "./utils.js";
+export * from "./base32.js";
+export * from "./base64.js";
 
 import { setLogErr as _setLogErr, logErr as _logErr } from "./libLog.js";
 export namespace UtilLogging {
