@@ -72,4 +72,14 @@ export namespace Base32 {
 
     return result;
   }
+
+  /**
+   * Create random base32 string.
+   * @param bytes byte length
+   * @returns {string} created random base32
+   */
+  export function randomBase32(bytes: number = 4): string {
+    const randbytes = crypto.getRandomValues(new Uint8Array(bytes));
+    return Base32.fromUint8Array(randbytes);
+  }
 }

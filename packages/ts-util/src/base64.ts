@@ -113,4 +113,14 @@ export namespace Base64 {
 
     return result;
   }
+
+  /**
+   * Create random base64 string.
+   * @param bytes byte length
+   * @returns {string} created random base64
+   */
+  export function randomBase64(bytes: number = 12): string {
+    const randbytes = crypto.getRandomValues(new Uint8Array(bytes));
+    return Base64.fromUint8Array(randbytes);
+  }
 }

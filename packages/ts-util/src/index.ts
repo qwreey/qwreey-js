@@ -8,6 +8,7 @@ export * from "./result.js";
 export * from "./utils.js";
 export * from "./base32.js";
 export * from "./base64.js";
+export * from "./timeid.js";
 
 import { setLogErr as _setLogErr, logErr as _logErr } from "./libLog.js";
 export namespace UtilLogging {
