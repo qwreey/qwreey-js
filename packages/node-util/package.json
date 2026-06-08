@@ -1,0 +1,52 @@
+{
+  "name": "@qwreey-js/node-util",
+  "version": "1.0.5",
+  "description": "Qwreey's nodejs utilities",
+  "keywords": [
+    "typescript",
+    "nodejs"
+  ],
+  "homepage": "https://github.com/qwreey/qwreey-js#readme",
+  "bugs": {
+    "url": "https://github.com/qwreey/qwreey-js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qwreey/qwreey-js.git"
+  },
+  "license": "MIT",
+  "author": "me@qwreey.moe",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "../../node_modules/typescript/bin/tsc",
+    "check": "npm run check:tsc && npm run check:eslint && npm run check:format",
+    "check:tsc": "../../node_modules/typescript/bin/tsc --noemit",
+    "check:eslint": "npm run --prefix ../../ check:eslint -- packages/node-util/src",
+    "check:format": "npm run --prefix ../../ prettier -- --check packages/node-util/src",
+    "fix:format": "npm run --prefix ../../ prettier -- --write packages/node-util/src",
+    "init": "npm ci --include-workspace-root --include=dev",
+    "prepack": "npm run init && npm run check && npm run build",
+    "test": "../../node_modules/.bin/tsx src/test/index.ts"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "!dist/test"
+  ],
+  "devDependencies": {
+    "@types/node": "^25.9.1"
+  },
+  "dependencies": {
+    "@qwreey-js/ts-util": "^1.0.5"
+  }
+}
