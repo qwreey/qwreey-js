@@ -12,11 +12,8 @@ export namespace TimeId {
    */
   export function create(timebase: Date | null = null): string {
     // Create random values
-    const randbytes = crypto.getRandomValues(new Uint8Array(8));
-    const k32 = Base32.fromUint8Array(randbytes);
-    const lower = k32.substring(0, 8);
-    const upper = k32.substring(8, 16);
-    const timepad = k32.substring(16, 19);
+    const randbytes = crypto.getRandomValues(new Uint8Array(2));
+    const randb32 = Base32.fromUint8Array(randbytes).substring(0, 3);
 
     // Construct time Uint8Array
     timebase ??= new Date();
@@ -27,10 +24,11 @@ export namespace TimeId {
     const timearr = new Uint8Array(timebuffer);
 
     // Assemble id
-    const timestr = Base32.fromUint8Array(timearr).substring(0, 13) + timepad;
-    const timelower = timestr.substring(0, 8);
-    const timeupper = timestr.substring(8, 16);
-    const generated = `${timelower}-${timeupper}-${lower}-${upper}`;
+    const timeb32 = Base32.fromUint8Array(timearr).substring(0, 13);
+
+    const timelower = timeb32.substring(0, 8);
+    const timeupper = timeb32.substring(8, 13);
+    const generated = `${timelower}-${timeupper}${randb32}`;
     return generated;
   }
 
@@ -43,25 +41,20 @@ export namespace TimeId {
    */
   export function parse(id: string): { date: Date; randbytes: Uint8Array } {
     const parts = id.split("-");
-    if (parts.length !== 4) {
+    if (parts.length !== 2) {
       throw new Error("Invalid timeId format");
     }
-    const [timeLower, timeUpper, randLower, randUpper] = parts as [
-      string,
-      string,
-      string,
-      string,
-    ];
+    const [lower, upper] = parts as [string, string];
 
-    const randStr = randLower + randUpper;
-    const randbytes = Base32.toUint8Array(randStr);
-
-    const timeStr = timeLower + timeUpper;
-    const timearr = Base32.toUint8Array(timeStr);
-
-    if (randbytes.length !== 8 || timearr.length !== 8) {
+    if (lower.length !== 8 || upper.length !== 8) {
       throw new Error("Invalid timeId payload");
     }
+
+    const randStr = upper.substring(5, 8);
+    const randbytes = Base32.toUint8Array(randStr);
+
+    const timeStr = lower + upper.substring(0, 5);
+    const timearr = Base32.toUint8Array(timeStr);
 
     const timeview = new DataView(
       timearr.buffer,

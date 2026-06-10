@@ -2,6 +2,9 @@ import { TimeId } from "../timeid.js";
 export function test() {
   const inputTime = new Date();
   const id = TimeId.create(inputTime);
+
+  console.log(id);
+
   const { date: parsedDate } = TimeId.parse(id);
   console.log(
     inputTime.toISOString(),
