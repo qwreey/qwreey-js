@@ -23,7 +23,7 @@
     // Open 이 생길 때 열리고, 없어질 때 닫힘
     // 닫힌 이후 display: none 은 420ms 이후 추가되어야함
     background-color: transparent;
-    transition: background var(--dim-duration) linear;
+    transition: background var(--dim-close-duration) linear;
     &.Dimming {
       @keyframes dimming-showing {
         from {
@@ -31,7 +31,7 @@
         }
       }
       background: var(--dim-background);
-      animation: dimming-showing 420ms linear;
+      animation: dimming-showing var(--dim-open-duration) linear;
     }
   }
 }

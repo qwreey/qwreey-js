@@ -16,12 +16,20 @@ export default defineConfig({
       formats: ["es"],
     },
     rollupOptions: {
-      external: ["react", "react/jsx-runtime", "react-dom"],
+      external: [
+        "react",
+        "react/jsx-runtime",
+        "react-dom",
+        "@qwreey-js/react-util",
+        "@qwreey-js/ts-util",
+      ],
       output: {
         globals: {
           react: "React",
           "react/jsx-runtime": "react/jsx-runtime",
           "react-dom": "ReactDOM",
+          "@qwreey-js/react-util": "@qwreey-js/react-util",
+          "@qwreey-js/ts-util": "@qwreey-js/ts-util",
         },
       },
     },

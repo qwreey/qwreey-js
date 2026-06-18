@@ -24,7 +24,7 @@ export function FullOverlay(params: FullOverlay.Params): React.ReactElement {
       setDimming(false);
       timeout = setTimeout(() => {
         setVisible(false);
-      }, options.dimDurationMs) as unknown as number;
+      }, options.dimCloseDurationMs) as unknown as number;
     }
     return () => {
       if (timeout != null) clearTimeout(timeout);
@@ -69,7 +69,8 @@ export function FullOverlay(params: FullOverlay.Params): React.ReactElement {
       className={mergeClassName(Styles.Dialog, visible ? null : Styles.Hidden)}
       style={asCssVars({
         dimBackground: options.dimBackground,
-        dimDuration: options.dimDurationMs.toString() + "ms",
+        dimCloseDuration: options.dimCloseDurationMs.toString() + "ms",
+        dimOpenDuration: options.dimOpenDurationMs.toString() + "ms",
       })}
     >
       <div
@@ -88,7 +89,8 @@ export namespace FullOverlay {
   export type Params = PropsWithChildren<{
     open: PassState<boolean>;
     maxScreenWidth?: number | null;
-    dimDurationMs?: number;
+    dimCloseDurationMs?: number;
+    dimOpenDurationMs?: number;
     dimBackground?: string;
     noCloseOnBackgroundClick?: boolean;
     noCloseOnEscape?: boolean;
@@ -96,7 +98,8 @@ export namespace FullOverlay {
 
   export const Defaults = {
     maxScreenWidth: 1200,
-    dimDurationMs: 200,
+    dimCloseDurationMs: 200,
+    dimOpenDurationMs: 300,
     dimBackground: "rgba(0, 0, 0, 0.4)",
     noCloseOnBackgroundClick: false,
     noCloseOnEscape: false,

@@ -1,6 +1,6 @@
 {
   "name": "@qwreey-js/react-web-component",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "description": "Qwreey's react web components and styles",
   "keywords": [
     "react",
@@ -27,7 +27,8 @@
   "peerDependencies": {
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0",
-    "@qwreey-js/react-util": "~1.0.5"
+    "@qwreey-js/react-util": "^1.0.5",
+    "@qwreey-js/ts-util": "^1.0.7"
   },
   "devDependencies": {
     "@storybook/react-vite": "^10.4.6",
@@ -40,7 +41,8 @@
     "storybook": "^10.4.6",
     "vite": "^8.0.16",
     "vite-plugin-dts": "^5.0.2",
-    "@qwreey-js/react-util": "^1.0.5"
+    "@qwreey-js/react-util": "^1.0.5",
+    "@qwreey-js/ts-util": "^1.0.7"
   },
   "publishConfig": {
     "access": "public"
