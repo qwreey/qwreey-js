@@ -3,7 +3,9 @@ import type { UnionToIntersection } from "./utils.js";
 /**
  * Represents a generic constructor function, capable of accepting both concrete and abstract classes.
  */
-export type AbstractConstructor<T = any> = abstract new (...args: any[]) => T;
+export type AbstractConstructor<T = any> = abstract new (
+  ...args: any[]
+) => T & { init(...args: any): void };
 
 /**
  * A utility type that combines two constructor types `A` and `B`.
@@ -12,7 +14,10 @@ export type AbstractConstructor<T = any> = abstract new (...args: any[]) => T;
 export type MixinBoth<
   A extends AbstractConstructor<InstanceType<A>>,
   B extends AbstractConstructor<InstanceType<B>>,
-> = (A & B) & AbstractConstructor<InstanceType<A> & InstanceType<B>>;
+> = (A & B) &
+  AbstractConstructor<
+    Omit<InstanceType<A>, "init"> & Omit<InstanceType<B>, "init">
+  >;
 
 /**
  * A recursive utility type that combines an array of constructor types `T` into a single constructor type.
@@ -152,3 +157,11 @@ export type MixinInstance<Apply extends MixinApplyList> = UnionToIntersection<
       : object;
   }[number]
 >;
+
+export function init<T extends AbstractConstructor>(
+  self: InstanceType<T>,
+  targetClass: T,
+  ...args: Parameters<InstanceType<T>["init"]>
+) {
+  targetClass.prototype.init.call(self, ...args);
+}

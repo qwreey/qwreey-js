@@ -1,0 +1,7 @@
+@use "../../utility.scss" as *;
+
+.MobileOnly {
+  @include layout-desktop {
+    display: none;
+  }
+}

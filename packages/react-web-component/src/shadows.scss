@@ -1,0 +1,22 @@
+// #region Shadows
+$shadow-0-value: 0 0 0 1px #CCCCCC;
+$shadow-2-value: $shadow-0-value, 0 1px 2px 0 rgba(0,0,0, 0.16), 0 0 1px 0 rgba(0,0,0, 0.12);
+$shadow-4-value: $shadow-0-value, 0 2px 4px 0 rgba(0,0,0, 0.16), 0 0 2px 0 rgba(0,0,0, 0.12);
+$shadow-8-value: $shadow-0-value, 0 4px 8px 0 rgba(0,0,0, 0.16), 0 0 4px 0 rgba(0,0,0, 0.12);
+$shadow-16-value: $shadow-0-value, 0 8px 16px 0 rgba(0,0,0, 0.16), 0 0 8px 0 rgba(0,0,0, 0.12);
+@mixin shadow-0 {
+  box-shadow: $shadow-0-value;
+}
+@mixin shadow-2 {
+  box-shadow: $shadow-2-value;
+}
+@mixin shadow-4 {
+  box-shadow: $shadow-4-value;
+}
+@mixin shadow-8 {
+  box-shadow: $shadow-8-value;
+}
+@mixin shadow-16 {
+  box-shadow: $shadow-16-value;
+}
+// #endregion Shadows

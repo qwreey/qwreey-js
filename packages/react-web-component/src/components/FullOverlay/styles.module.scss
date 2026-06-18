@@ -1,0 +1,37 @@
+@use "../../utility.scss" as *;
+
+// Native dialog tag
+.Dialog {
+  border: none;
+  overflow: visible;
+  background-color: transparent;
+  &::backdrop {
+    background-color: transparent;
+  }
+  &.Hidden {
+    display: none;
+  }
+
+  // Div background dimming
+  .Background {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100dvh;
+    width: 100dvw;
+
+    // Open 이 생길 때 열리고, 없어질 때 닫힘
+    // 닫힌 이후 display: none 은 420ms 이후 추가되어야함
+    background-color: transparent;
+    transition: background var(--dim-duration) linear;
+    &.Dimming {
+      @keyframes dimming-showing {
+        from {
+          background: transparent;
+        }
+      }
+      background: var(--dim-background);
+      animation: dimming-showing 420ms linear;
+    }
+  }
+}

@@ -107,7 +107,7 @@ export namespace PassState {
    * @param deps Optional dependencies array to reset the state when changed.
    * @returns A PassState instance.
    */
-  export function use<T>(initval: InitAction<T>, deps?: any[]): PassState<T> {
+  function usePassState<T>(initval: InitAction<T>, deps?: any[]): PassState<T> {
     const [value, setValue] = React.useState<T>(() => evalInitAction(initval));
     const refed = React.useRef<PassState<T> | null>(null);
 
@@ -133,6 +133,7 @@ export namespace PassState {
 
     return refed.current;
   }
+  export const use = usePassState;
 
   /**
    * Type guard to check if an object is a PassState instance.

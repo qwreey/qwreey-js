@@ -1,6 +1,6 @@
 {
   "name": "@qwreey-js/react-util",
-  "version": "1.0.1",
+  "version": "1.0.6",
   "description": "Qwreey's react utilities",
   "keywords": [
     "react",
@@ -29,9 +29,9 @@
     "init": "npm ci --include-workspace-root --include=dev",
     "prepack": "npm run init && npm run check && npm run build"
   },
-  "dependencies": {
-    "react": "^19.2.6",
-    "@qwreey-js/ts-util": "^1.0.3"
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "@qwreey-js/ts-util": "^1.0.7"
   },
   "exports": {
     ".": {
@@ -46,6 +46,7 @@
     "dist"
   ],
   "devDependencies": {
-    "@types/react": "^19.2.14"
+    "@types/react": "^19.2.14",
+    "@qwreey-js/ts-util": "^1.0.7"
   }
 }
