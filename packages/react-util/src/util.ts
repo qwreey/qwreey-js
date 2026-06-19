@@ -1,4 +1,7 @@
+"use client";
+
 import type React from "react";
+import { useMemo } from "react";
 
 /**
  * Determines whether the code is running on the server.
@@ -24,4 +27,38 @@ export function asCssVars(vars: { [key: string]: any }): React.CSSProperties {
       v,
     ]),
   );
+}
+
+export function useCssVars(vars: { [key: string]: any }): React.CSSProperties {
+  return useMemo(() => asCssVars(vars), Object.values(vars));
+}
+
+export interface DOMRectCompat {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+export function transformInto<T extends DOMRectCompat, U extends DOMRectCompat>(
+  current: T,
+  into: U,
+  anthorPoint: [number, number] = [0.5, 0.5],
+): [string, string] {
+  const diffX = into.x - current.x;
+  const diffY = into.y - current.y;
+
+  const scaleX = into.width / current.width;
+  const scaleY = into.height / current.height;
+
+  const originX = current.width * anthorPoint[0];
+  const originY = current.height * anthorPoint[1];
+
+  const scaleOffsetX = originX * (scaleX - 1);
+  const scaleOffsetY = originY * (scaleY - 1);
+
+  return [
+    `translate(${diffX + scaleOffsetX}px, ${diffY + scaleOffsetY}px)`,
+    `scale(${scaleX}, ${scaleY})`,
+  ];
 }

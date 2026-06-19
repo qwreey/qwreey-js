@@ -87,6 +87,29 @@ $ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
   flex-direction: column;
   justify-content: space-between;
 }
+@mixin frow-center {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+@mixin fcolumn-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+@mixin screen-sized {
+  height: 100dvh;
+  width: 100dvw;
+}
+@mixin absolute-fill {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
 // #endregion Layouts
 
 // #region Selection / Dragging

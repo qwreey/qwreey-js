@@ -1,0 +1,26 @@
+.TransformDiv {
+  &.Backward {
+    @keyframes transform-into-backward {
+      from {
+        transform: var(--tdiv-end-transform);
+      }
+      to {
+        transform: var(--tdiv-start-transform);
+      }
+    }
+    animation: transform-into-backward var(--tdiv-backward-duration)
+      var(--tdiv-backward-ease);
+  }
+  &.Forward {
+    @keyframes transform-into-forward {
+      from {
+        transform: var(--tdiv-start-transform);
+      }
+      to {
+        transform: var(--tdiv-end-transform);
+      }
+    }
+    animation: transform-into-forward var(--tdiv-forward-duration)
+      var(--tdiv-forward-ease) forwards;
+  }
+}

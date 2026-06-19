@@ -6,7 +6,12 @@ import { isServer } from "./util.js";
 /**
  * Represents the dimensions of an HTML element.
  */
-export type Size = { width: number; height: number };
+export type Size = {
+  width: number;
+  height: number;
+  target: HTMLElement;
+  entry: ResizeObserverEntry;
+};
 
 /**
  * Callback function triggered when the observed element's size changes.
@@ -23,13 +28,13 @@ export type UseSizeCallback = (size: Size) => any;
  * @param {React.RefObject<Elem | null>} container - The ref of the target element.
  * @param {UseSizeCallback} callback - The function to execute on size change.
  * @param {any[]} callbackDeps - Dependency array to update the callback.
- * @param {"contentRect" | "clientSize"} [source="contentRect"] - The size measurement property to use.
+ * @param {"contentRect" | "clientSize" | "offsetSize"} [source="contentRect"] - The size measurement property to use.
  */
 export function useSize<Elem extends HTMLElement>(
   container: React.RefObject<Elem | null>,
   callback: UseSizeCallback,
   callbackDeps: any[],
-  source: "contentRect" | "clientSize" = "contentRect",
+  source: "contentRect" | "clientSize" | "offsetSize" = "contentRect",
 ) {
   const callbackRef = React.useRef(callback);
   const currentValue = React.useRef<Size | null>(null);
@@ -46,17 +51,27 @@ export function useSize<Elem extends HTMLElement>(
   React.useEffect(() => {
     if (!container.current) return;
     const observer = new ResizeObserver((entries) => {
-      const target = entries[0];
-      if (!target) return;
-      let { width, height } = target.contentRect;
+      const entry = entries[0];
+      if (!entry) return;
+      const target = entry.target as HTMLElement;
+
+      let width: number, height: number;
       if (source == "clientSize") {
-        width = target.target.clientWidth;
-        height = target.target.clientHeight;
+        width = target.clientWidth;
+        height = target.clientHeight;
       } else if (source == "contentRect") {
-        width = target.contentRect.width;
-        height = target.contentRect.height;
+        width = entry.contentRect.width;
+        height = entry.contentRect.height;
+      } else {
+        width = target.offsetWidth;
+        height = target.offsetHeight;
       }
-      currentValue.current = { width, height };
+      currentValue.current = {
+        width,
+        height,
+        target,
+        entry: entry,
+      };
       callbackRef.current(currentValue.current);
     });
     observer.observe(container.current);
@@ -71,12 +86,12 @@ export function useSize<Elem extends HTMLElement>(
  *
  * @template Elem
  * @param {React.RefObject<Elem | null>} [ref] - An optional existing ref to attach.
- * @param {"contentRect" | "clientSize"} [source="contentRect"] - The size measurement property to use.
+ * @param {"contentRect" | "clientSize" | "offsetSize"} [source="contentRect"] - The size measurement property to use.
  * @returns {[React.RefObject<Elem | null>, Size | null]} A tuple containing the ref and current size state.
  */
 export function useSizeState<Elem extends HTMLElement>(
   ref?: React.RefObject<Elem | null>,
-  source: "contentRect" | "clientSize" = "contentRect",
+  source: "contentRect" | "clientSize" | "offsetSize" = "contentRect",
 ): [React.RefObject<Elem | null>, Size | null] {
   const fallbackRef = React.useRef<Elem>(null);
   ref ??= fallbackRef;
