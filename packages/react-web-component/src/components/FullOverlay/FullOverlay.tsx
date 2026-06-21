@@ -56,7 +56,9 @@ export function FullOverlay(params: FullOverlay.Params): React.ReactElement {
   return (
     <dialog
       ref={dialogRef}
-      closedby={options.noCloseOnEscape ? "none" : undefined}
+      closedby={
+        options.noCloseOnEscape || !options.open.value ? "none" : undefined
+      }
       onCancel={(event) => {
         if (options.noCloseOnEscape) {
           event.preventDefault();
