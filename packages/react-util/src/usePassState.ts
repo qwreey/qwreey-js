@@ -111,21 +111,26 @@ export namespace PassState {
     const [value, setValue] = React.useState<T>(() => evalInitAction(initval));
     const refed = React.useRef<PassState<T> | null>(null);
 
+    // Create wrapped setter to set value and update refed pass state class
     const wrappedSetter = (action: UpdateAction<T>) => {
       const newValue = evalUpdateAction(action, refed.current!.value);
       refed.current!.value = newValue;
       setValue(() => newValue);
     };
 
+    // Init pass state class
     refed.current ??= new PassStateImpl<T>(
       value,
       wrappedSetter,
     ) as unknown as PassState<T>;
 
+    // Reinit on deps change
     const inited = React.useRef<boolean>(false);
     React.useEffect(() => {
-      if (inited.current) return;
-      inited.current = true;
+      if (!inited.current) {
+        inited.current = true;
+        return;
+      }
       const newValue = evalInitAction(initval);
       refed.current!.value = newValue;
       setValue(() => newValue);
@@ -161,12 +166,8 @@ export namespace PassState {
     value: T,
     setValue: (newValue: T) => void,
   ): PassState<T> {
-    const wrapped = new PassStateImpl(value, (i: T | ((input: T) => T)) => {
-      if (typeof i === "function") {
-        setValue((i as any)(value) as any);
-      } else {
-        setValue(i);
-      }
+    const wrapped = new PassStateImpl(value, (i: UpdateAction<T>) => {
+      setValue(evalUpdateAction(i, value));
     });
     return wrapped as unknown as PassState<T>;
   }

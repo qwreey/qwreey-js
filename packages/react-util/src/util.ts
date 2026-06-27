@@ -1,7 +1,6 @@
 "use client";
 
-import type React from "react";
-import { useMemo } from "react";
+import React from "react";
 
 /**
  * Determines whether the code is running on the server.
@@ -30,7 +29,7 @@ export function asCssVars(vars: { [key: string]: any }): React.CSSProperties {
 }
 
 export function useCssVars(vars: { [key: string]: any }): React.CSSProperties {
-  return useMemo(() => asCssVars(vars), Object.values(vars));
+  return React.useMemo(() => asCssVars(vars), Object.values(vars));
 }
 
 export interface DOMRectCompat {

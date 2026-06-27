@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import React from "react";
 
 export function indexedRef<
   Elem,
@@ -28,11 +28,11 @@ export function assignRef<T>(ref: React.Ref<T> | undefined, value: T | null) {
 }
 
 export function useArrayRef<Elem>(): React.RefObject<(Elem | null)[]> {
-  return useRef<(Elem | null)[]>([]);
+  return React.useRef<(Elem | null)[]>([]);
 }
 
 export function useMapRef<Elem>(): React.RefObject<{
   [key: string]: Elem | null;
 }> {
-  return useRef<{ [key: string]: Elem | null }>({});
+  return React.useRef<{ [key: string]: Elem | null }>({});
 }

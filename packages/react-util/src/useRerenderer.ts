@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import React from "react";
 
 export type Rerenderer = (() => void) & { value: any };
 
@@ -19,8 +19,8 @@ function createRerenderer(
 }
 
 export function useRerenderer(): Rerenderer {
-  const [value, update] = useState<null | []>(null);
-  const updateWrap = useRef<Rerenderer>(null);
+  const [value, update] = React.useState<null | []>(null);
+  const updateWrap = React.useRef<Rerenderer>(null);
 
   return (updateWrap.current ??= createRerenderer(value, update));
 }

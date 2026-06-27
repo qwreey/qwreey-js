@@ -6,3 +6,5 @@ export * from "./useDelayedState.js";
 export * from "./indexedRef.js";
 export * from "./util.js";
 export * from "./useRerenderer.js";
+export * from "./useKeyboard.js";
+export * from "./useAudio.js";
