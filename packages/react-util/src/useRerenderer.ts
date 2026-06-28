@@ -2,25 +2,15 @@
 
 import React from "react";
 
-export type Rerenderer = (() => void) & { value: any };
-
-function createRerenderer(
-  value: null | [],
-  updateFn: React.Dispatch<React.SetStateAction<null | []>>,
-): Rerenderer {
-  let fn: Rerenderer;
-  // eslint-disable-next-line prefer-const
-  fn = (() => {
-    fn.value = [];
-    updateFn(fn.value);
-  }) as Rerenderer;
-  fn.value = value;
-  return fn;
-}
+export type Trigger = () => void;
+export type Key = number;
+export type Rerenderer = { key: Key; trigger: Trigger };
 
 export function useRerenderer(): Rerenderer {
-  const [value, update] = React.useState<null | []>(null);
-  const updateWrap = React.useRef<Rerenderer>(null);
-
-  return (updateWrap.current ??= createRerenderer(value, update));
+  const [key, update] = React.useState(1);
+  const trigger = React.useCallback(() => {
+    update((curr) => curr + 1);
+  }, []);
+  const rerenderer = React.useMemo<Rerenderer>(() => ({ key, trigger }), [key]);
+  return rerenderer;
 }

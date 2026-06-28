@@ -1,17 +1,17 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
+import { useInlineEffect } from "./useInlineEffect.js";
+import { useIsFirstRender } from "./useIsFirstRender.js";
 
 /**
  * A state utility that bundles a React state value and its setter into a single object.
  * This allows passing a single prop to child components instead of two separate props.
- *
- * Note: `value` is kept up-to-date by reference, meaning it always reflects the latest state.
  */
 export namespace PassState {
   export type UpdateActionFunc<T> = (before: T) => T;
   export type UpdateAction<T> = T | UpdateActionFunc<T>;
-  function evalUpdateAction<T>(action: UpdateAction<T>, current: T): T {
+  export function evalUpdateAction<T>(action: UpdateAction<T>, current: T): T {
     if (typeof action === "function") {
       return (action as UpdateActionFunc<T>)(current);
     }
@@ -20,7 +20,7 @@ export namespace PassState {
 
   export type InitActionFunc<T> = () => T;
   export type InitAction<T> = T | InitActionFunc<T>;
-  function evalInitAction<T>(action: InitAction<T>): T {
+  export function evalInitAction<T>(action: InitAction<T>): T {
     if (typeof action === "function") {
       return (action as InitActionFunc<T>)();
     }
@@ -102,41 +102,27 @@ export namespace PassState {
   }
 
   /**
-   * A React hook that creates a PassState, wrapping `useState` and maintaining an up-to-date reference.
+   * A React hook that creates a PassState, wrapping `useState`
    * @param initval Initial value or a function returning it.
    * @param deps Optional dependencies array to reset the state when changed.
    * @returns A PassState instance.
    */
   function usePassState<T>(initval: InitAction<T>, deps?: any[]): PassState<T> {
-    const [value, setValue] = React.useState<T>(() => evalInitAction(initval));
-    const refed = React.useRef<PassState<T> | null>(null);
+    const [value, setValue] = React.useState<T>(initval);
 
-    // Create wrapped setter to set value and update refed pass state class
-    const wrappedSetter = (action: UpdateAction<T>) => {
-      const newValue = evalUpdateAction(action, refed.current!.value);
-      refed.current!.value = newValue;
-      setValue(() => newValue);
-    };
-
-    // Init pass state class
-    refed.current ??= new PassStateImpl<T>(
-      value,
-      wrappedSetter,
-    ) as unknown as PassState<T>;
+    const state = React.useMemo(
+      () => new PassStateImpl<T>(value, setValue) as unknown as PassState<T>,
+      [value],
+    );
 
     // Reinit on deps change
-    const inited = React.useRef<boolean>(false);
-    React.useEffect(() => {
-      if (!inited.current) {
-        inited.current = true;
-        return;
-      }
-      const newValue = evalInitAction(initval);
-      refed.current!.value = newValue;
-      setValue(() => newValue);
+    const isFirstRender = useIsFirstRender();
+    useInlineEffect(() => {
+      if (isFirstRender) return;
+      setValue(initval);
     }, deps ?? []);
 
-    return refed.current;
+    return state;
   }
   export const use = usePassState;
 
@@ -170,6 +156,14 @@ export namespace PassState {
       setValue(evalUpdateAction(i, value));
     });
     return wrapped as unknown as PassState<T>;
+  }
+
+  // 메모자이징 하는걸 명시하는 주석 추가
+  export function useMemoWrap<T>(
+    value: T,
+    setValue: (newValue: T) => void,
+  ): PassState<T> {
+    return useMemo(() => wrap(value, setValue), [value]);
   }
 
   /** Specific error checking methods for numeric PassState. */
@@ -216,7 +210,12 @@ export namespace PassState {
   export type PassStateAny<T> = {
     /** Updates the state, triggering a re-render in the originating context. */
     update: React.Dispatch<React.SetStateAction<T>>;
-    /** The current value of the state. Always up-to-date by reference. */
+    /**
+     * The value of the state at the time of the current render.
+     * @note This is a stable snapshot for the current rendering cycle.
+     * It is safe to use within the render body, as it will remain consistent
+     * throughout this specific render execution, even if the state is updated elsewhere.
+     */
     value: T;
     /** Returns the message if the value is falsy, otherwise null. */
     falsyError(this: PassState<T>, message: string): string | null;

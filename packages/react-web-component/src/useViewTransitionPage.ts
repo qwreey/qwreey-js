@@ -1,3 +1,5 @@
+"use client";
+
 import { PassState } from "@qwreey-js/react-util";
 import { useState } from "react";
 import { flushSync } from "react-dom";
@@ -14,7 +16,8 @@ export function useViewTransitionPage<Page>(
   ) => void | null | undefined | (() => void),
 ): PassState<Page> {
   const [rawPage, setRawPage] = useState<Page>(defaultPage);
-  const page = PassState.wrap(rawPage, (newValue) => {
+
+  return PassState.useMemoWrap(rawPage, (newValue) => {
     // 브라우저가 View Transition API를 지원하는지 확인
     // (지원 안 하면 애니메이션 없이 그냥 변경)
     if (!document.startViewTransition) {
@@ -38,6 +41,4 @@ export function useViewTransitionPage<Page>(
       transition.finished.finally(cleanup);
     }
   });
-
-  return page;
 }

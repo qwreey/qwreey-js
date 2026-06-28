@@ -1,6 +1,6 @@
 {
   "name": "@qwreey-js/react-web-component",
-  "version": "1.0.14",
+  "version": "2.0.1",
   "description": "Qwreey's react web components and styles",
   "keywords": [
     "react",
@@ -25,13 +25,13 @@
     "prepack": "npm run build"
   },
   "peerDependencies": {
-    "@qwreey-js/react-util": "^1.0.9",
+    "@qwreey-js/react-util": "^2.0.1",
     "@qwreey-js/ts-util": "^1.0.7",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
   },
   "devDependencies": {
-    "@qwreey-js/react-util": "^1.0.9",
+    "@qwreey-js/react-util": "^2.0.1",
     "@qwreey-js/ts-util": "^1.0.7",
     "@storybook/react-vite": "^10.4.6",
     "@types/node": "^25.9.3",
@@ -56,9 +56,9 @@
       "import": "./dist/react-web-component.mjs"
     },
     "./styles.css": "./dist/react-web-component.css",
-    "./utility.scss": "./src/utility.scss",
-    "./shadows.scss": "./src/shadows.scss",
-    "./fonts.scss": "./src/fonts.scss"
+    "./src/utility.scss": "./src/utility.scss",
+    "./src/shadows.scss": "./src/shadows.scss",
+    "./src/fonts.scss": "./src/fonts.scss"
   },
   "files": [
     "dist",

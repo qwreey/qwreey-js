@@ -1,18 +1,15 @@
 "use client";
 
 import React from "react";
-import { isServer } from "./util.js";
+import { useLatest } from "./useLatest.js";
 
 export type KeyboardCallback = (ev: KeyboardEvent) => any;
 export function useKeyboard(callback: KeyboardCallback) {
-  const callbackRef = React.useRef(callback);
-  callbackRef.current = callback;
+  const latestCallback = useLatest(callback);
 
   React.useEffect(() => {
-    if (isServer()) return;
-
     const handleKeyDown = (ev: KeyboardEvent) => {
-      callbackRef.current(ev);
+      latestCallback.current(ev);
     };
 
     window.addEventListener("keydown", handleKeyDown);

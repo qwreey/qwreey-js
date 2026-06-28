@@ -2,6 +2,7 @@
 
 import React from "react";
 import { isServer } from "./util.js";
+import { useLatest } from "./useLatest.js";
 
 /**
  * Represents the dimensions of an HTML element.
@@ -36,12 +37,11 @@ export function useSize<Elem extends HTMLElement>(
   callbackDeps: any[],
   source: "contentRect" | "clientSize" | "offsetSize" = "contentRect",
 ) {
-  const callbackRef = React.useRef(callback);
+  const callbackRef = useLatest(callback);
   const currentValue = React.useRef<Size | null>(null);
 
   // callback 의 디펜던시 업데이트시 callback 재수행
   React.useEffect(() => {
-    callbackRef.current = callback;
     if (currentValue.current) {
       callback(currentValue.current);
     }

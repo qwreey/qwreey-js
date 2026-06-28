@@ -1,6 +1,9 @@
 "use client";
 
 import React from "react";
+import { PassState } from "./usePassState.js";
+import { useIsFirstRender } from "./useIsFirstRender.js";
+import { useInlineEffect } from "./useInlineEffect.js";
 
 export function playAudio(audio: HTMLAudioElement) {
   audio.pause();
@@ -43,19 +46,19 @@ export class AudioHandle {
   }
 }
 
-export function useAudio(src?: string | undefined): AudioHandle {
+export function useAudio(
+  src?: PassState.InitAction<string | undefined>,
+  deps?: any[],
+): AudioHandle {
   const handle = React.useRef<AudioHandle>(null);
-  handle.current ??= new AudioHandle(new Audio(src));
+  handle.current ??= new AudioHandle(new Audio(PassState.evalInitAction(src)));
 
   // Load audio if src change
-  const isFirstRender = React.useRef(true);
-  React.useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
-    handle.current!.src = src;
-  }, [src]);
+  const isFirstRender = useIsFirstRender();
+  useInlineEffect(() => {
+    if (isFirstRender) return;
+    handle.current!.src = PassState.evalInitAction(src);
+  }, deps ?? []);
 
   // Clear audio
   React.useEffect(

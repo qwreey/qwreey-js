@@ -8,3 +8,7 @@ export * from "./util.js";
 export * from "./useRerenderer.js";
 export * from "./useKeyboard.js";
 export * from "./useAudio.js";
+export * from "./useInlineEffect.js";
+export * from "./useIsFirstRender.js";
+export * from "./useLatest.js";
+export * from "./useCssVars.js";

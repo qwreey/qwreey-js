@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React from "react";
+import { useLatest } from "./useLatest.js";
 
 /**
  * A custom React hook that returns a state value which updates after a specified delay
@@ -15,19 +16,35 @@ export function useDelayedState<T>(
   input: T,
   delay: number | ((input: T) => number),
 ): T {
-  const [value, setValue] = useState(input);
+  const [value, setValue] = React.useState(() => input);
+  const timeoutRef = React.useRef<any>(undefined);
+  const latestDelay = useLatest(delay);
 
-  useEffect(() => {
-    const delayMs = typeof delay === "function" ? delay(input) : delay;
+  const delayMs = React.useMemo(
+    () =>
+      value === input
+        ? null
+        : typeof latestDelay.current === "function"
+          ? latestDelay.current(input)
+          : latestDelay.current,
+    [input, value],
+  );
+  if (delayMs === 0) {
+    setValue(() => input);
+    clearTimeout(timeoutRef.current);
+  }
 
-    const timeout = setTimeout(() => {
-      setValue(input);
+  React.useEffect(() => {
+    if (delayMs === 0 || delayMs === null) return;
+
+    timeoutRef.current = setTimeout(() => {
+      setValue(() => input);
     }, delayMs);
 
     return () => {
-      clearTimeout(timeout);
+      clearTimeout(timeoutRef.current);
     };
-  }, [input]);
+  }, [input, delayMs]);
 
   return value;
 }
