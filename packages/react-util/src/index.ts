@@ -12,3 +12,4 @@ export * from "./useInlineEffect.js";
 export * from "./useIsFirstRender.js";
 export * from "./useLatest.js";
 export * from "./useCssVars.js";
+export * from "./usePreloadImages.js";
